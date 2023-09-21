@@ -8,9 +8,9 @@ public class NBody {
     public static Planet[] readPlanets(String s)
     {
         In in=new In(s);
-        Planet[] planets=new Planet[5];
+        int nums=in.readInt();
+        Planet[] planets=new Planet[nums];
         // clear something don't need
-        in.readInt();
         in.readDouble();
         for(int i=0;i<planets.length;i++)
         {
