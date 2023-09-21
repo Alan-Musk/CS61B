@@ -38,8 +38,8 @@ public class NBody {
         {
             StdDraw.enableDoubleBuffering();
             // Create an xForces array and yForces array
-            double[] xForces=new double[5];
-            double[] yForces=new double[5];
+            double[] xForces=new double[planets.length];
+            double[] yForces=new double[planets.length];
             // Calculate the net x and y forces for each planet
             for(int i=0;i<planets.length;i++)
             {

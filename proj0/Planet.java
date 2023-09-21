@@ -29,22 +29,22 @@ public class Planet {
     }
     // calculate the distance of current planet and chose planet
     // Return R
-    private double calcDistance(Planet p)
+    public double calcDistance(Planet p)
     {
         return Math.sqrt((Math.pow((this.xxPos-p.xxPos),2)+Math.pow((this.yyPos-p.yyPos),2)));
     }
     // Return F
-    private double calcForceExertedBy(Planet p)
+    public double calcForceExertedBy(Planet p)
     {
         return (G*this.mass*p.mass)/Math.pow(this.calcDistance(p),2);
     }
     // Return Fx
-    private double calcForceExertedByX(Planet p)
+    public double calcForceExertedByX(Planet p)
     {
         return this.calcForceExertedBy(p)*(p.xxPos-this.xxPos)/(this.calcDistance(p));
     }
     // Return Fy
-    private double calcForceExertedByY(Planet p)
+    public double calcForceExertedByY(Planet p)
     {
         return this.calcForceExertedBy(p)*(p.yyPos-this.yyPos)/(this.calcDistance(p));
     }
