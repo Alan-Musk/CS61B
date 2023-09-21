@@ -29,7 +29,7 @@ public class Planet {
     }
     // calculate the distance of current planet and chose planet
     // Return R
-    public double calcDistance(Planet p)
+    private double calcDistance(Planet p)
     {
         return Math.sqrt((Math.pow((this.xxPos-p.xxPos),2)+Math.pow((this.yyPos-p.yyPos),2)));
     }
