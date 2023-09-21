@@ -7,6 +7,7 @@ public class NBody {
     }
     public static Planet[] readPlanets(String s)
     {
+
         In in=new In(s);
         int nums=in.readInt();
         Planet[] planets=new Planet[nums];
@@ -26,6 +27,7 @@ public class NBody {
     }
 
     public static void main(String[] args) {
+
         double T=Double.valueOf(args[0]);
         double dt=Double.valueOf(args[1]);
         String filename=args[2];
