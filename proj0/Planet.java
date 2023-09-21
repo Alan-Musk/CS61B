@@ -34,17 +34,17 @@ public class Planet {
         return Math.sqrt((Math.pow((this.xxPos-p.xxPos),2)+Math.pow((this.yyPos-p.yyPos),2)));
     }
     // Return F
-    public double calcForceExertedBy(Planet p)
+    private double calcForceExertedBy(Planet p)
     {
         return (G*this.mass*p.mass)/Math.pow(this.calcDistance(p),2);
     }
     // Return Fx
-    public double calcForceExertedByX(Planet p)
+    private double calcForceExertedByX(Planet p)
     {
         return this.calcForceExertedBy(p)*(p.xxPos-this.xxPos)/(this.calcDistance(p));
     }
     // Return Fy
-    public double calcForceExertedByY(Planet p)
+    private double calcForceExertedByY(Planet p)
     {
         return this.calcForceExertedBy(p)*(p.yyPos-this.yyPos)/(this.calcDistance(p));
     }
