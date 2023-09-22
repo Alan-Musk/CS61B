@@ -1,7 +1,7 @@
 import java.awt.*;
 
 public class Planet {
-    static final double G=6.67e-11;
+    private static final double G=6.67e-11;
     public double xxPos;   // current x position
     public double yyPos;   //current y position
     public double xxVel;   //current velocity in the x direction
