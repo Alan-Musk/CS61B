@@ -35,4 +35,20 @@ public class IntList {
         }
         return p.first;
     }
+    public int getRecursion(int i)
+    {
+        if (i==0)
+        {
+            return this.first;
+        }
+        return this.rest.getRecursion(i-1);
+    }
+
+    public static void main(String[] args) {
+        IntList num=new IntList(4,null);
+        num=new IntList(3,num);
+        num=new IntList(2,num);
+        num=new IntList(1,num);
+        System.out.println(num.get(0));
+    }
 }
