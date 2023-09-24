@@ -2,6 +2,11 @@ public class IntList {
     public  int first;
     public IntList rest;
 
+    public void addFirst(int x)
+    {
+        this.rest=new IntList(this.first,this.rest);
+        this.first=x;
+    }
     public IntList(int f,IntList r)
     {
         first=f;
