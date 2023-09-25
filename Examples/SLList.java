@@ -50,6 +50,7 @@ public class SLList {
     public static void main(String[] args) {
         SLList L=new SLList();
         L.addLast(5);
+        L.addFirst(10);
         System.out.println( L.getFirst());
     }
 }
