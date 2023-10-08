@@ -78,10 +78,11 @@ public class LinkedListDequeTest {
 //		passed = checkEmpty(true, lld1.isEmpty()) && passed;
 //
 //		printTestStatus(passed);
-		lld1.addFirst(0);
-		lld1.removeLast();
-		lld1.addFirst(2);
-		System.out.println(lld1.removeLast());
+		lld1.addLast(5);
+		lld1.addLast(1);
+
+		System.out.println(lld1.get(0));
+		System.out.println(lld1.get(0));
 	}
 
 	public static void main(String[] args) {
