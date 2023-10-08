@@ -94,6 +94,10 @@ public class LinkedListDeque<T>{
     //Gets the item at the given index
     public T get(int index)
     {
+        if(index<0||index>=size)
+        {
+            return null;
+        }
         Node current=sentinel;
         while(index!=0)
         {
@@ -101,5 +105,20 @@ public class LinkedListDeque<T>{
             index-=1;
         }
         return current.item;
+    }
+    public T getRecursive(int index)
+    {
+        if(index<0||index>=size) {
+            return null;
+        }
+        return getRecursiveHelper(index,sentinel.next);
+    }
+    public T getRecursiveHelper(int index,Node curret)
+    {
+        if(index==0)
+        {
+            return curret.item;
+        }
+        return getRecursiveHelper(index-1,curret.next);
     }
 }
