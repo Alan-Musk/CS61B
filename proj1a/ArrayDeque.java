@@ -1,30 +1,50 @@
 public class ArrayDeque<T>{
     private T[] items;
-    private  int index;
-
+    private int head;  // 头指针 一般为下标0
+    private int size;  // 大小
+    private int tail;  // 尾指针
+// TODO 调整resize 统一整合数组 head=0 tail=size  -->重新检查一下所有代码
     public ArrayDeque()
     {
         items=(T []) new Object[8];
-        index=0;
+        size=0;
+        head=0;
+        tail=0;
     }
     private void resize(int size)
     {
         T[] newItems=(T []) new Object[size];
-        System.arraycopy(items,0,newItems,0,index);
+
+        System.arraycopy(items,0,newItems,0,Math.max(head,tail));
         items=newItems;
     }
-    public void add(T t)
+    public void addFirst(T t)
     {
-        if(index>= items.length)
+        if(size>= items.length)
         {
             resize(items.length*2);
         }
-        items[index]=t;
-        index+=1;
+        if((head-=1)<0)
+        {
+            head= items.length-1;
+        }
+        items[head]=t;
+        size+=1;
     }
-    public void remove()
+
+    public void addLast(T t)
     {
-        if(index<items.length*0.25&&index>=16)
+        if(tail>= items.length)
+        {
+            resize(items.length*2);
+        }
+        items[tail]=t;
+        tail+=1;
+        size+=1;
+    }
+    public void removeFirst()
+    {
+        if(size<items.length*0.25&&size>=16)
         {
             resize(items.length/2);
         }
@@ -33,7 +53,11 @@ public class ArrayDeque<T>{
     }
     public int size()
     {
-        return index;
+        return size;
+    }
+    public boolean isEmpty()
+    {
+        return size==0;
     }
     public T get(int i)
     {
