@@ -5,6 +5,14 @@ public class Sort {
     }
     public static  String findSmallest(String[] x)
     {
-        return x[3];
+        String smallest=x[0];
+        for(int i=0;i<x.length;i+=1)
+        {
+            if(x[i].compareTo(smallest)<0)
+            {
+                smallest=x[i];
+            }
+        }
+        return smallest;
     }
 }

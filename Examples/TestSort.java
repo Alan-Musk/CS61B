@@ -15,6 +15,12 @@ public class TestSort {
         String actual=Sort.findSmallest(input);
         org.junit.Assert.assertEquals(excepted,actual);
 
+        String[] input2={"there","are","many","pigs"};
+        String expected2="are";
+
+        String actual2=Sort.findSmallest(input2);
+        org.junit.Assert.assertEquals(expected2,actual2);
+
     }
     public static void main(String[] args) {
         testFindSmallest();
