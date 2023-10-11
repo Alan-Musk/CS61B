@@ -1,4 +1,4 @@
-public class ArrayDeque<T>{
+public class ArrayDeque<T> {
     private T[] items;
     private int head;  // 头指针
     private int size;  // 大小
@@ -6,143 +6,128 @@ public class ArrayDeque<T>{
 
     private int length;
 
-    public ArrayDeque()
-    {
-        items=(T []) new Object[8];
-        size=0;
-        head=4;
-        tail=4;
-        length=8;
-    }
-    public int size()
-    {
-        return size;
-    }
-    public boolean isEmpty()
-    {
-        return size==0;
+    public ArrayDeque() {
+        items = (T[]) new Object[8];
+        size = 0;
+        head = 4;
+        tail = 4;
+        length = 8;
     }
 
-    private int minusOne(int index)
-    {
-        if(index==0)
-        {
-            return length-1;
-        }
-        return index-1;
+    public int size() {
+        return size;
     }
-    private int plusOne(int index,int module)
-    {
-        index%=module;
-        if(index==module-1)
-        {
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    private int minusOne(int index) {
+        if (index == 0) {
+            return length - 1;
+        }
+        return index - 1;
+    }
+
+    private int plusOne(int index, int module) {
+        index %= module;
+        if (index == module - 1) {
             return 0;
         }
-        return index+1;
+        return index + 1;
     }
-    private void grow()
-    {
-        T[] newArray=(T[]) new Object[length*2];
-        int ptr1=head;
-        int ptr2=length;
-        while(ptr1!=tail)
-        {
-            newArray[ptr2]=items[ptr1];
-            ptr1=plusOne(ptr1,length);
-            ptr2=plusOne(ptr2,length*2);
+
+    private void grow() {
+        T[] newArray = (T[]) new Object[length * 2];
+        int ptr1 = head;
+        int ptr2 = length;
+        while (ptr1 != tail) {
+            newArray[ptr2] = items[ptr1];
+            ptr1 = plusOne(ptr1, length);
+            ptr2 = plusOne(ptr2, length * 2);
         }
-        head=length;
-        tail=ptr2;
-        items=newArray;
-        length*=2;
+        head = length;
+        tail = ptr2;
+        items = newArray;
+        length *= 2;
     }
-    private void shrink()
-    {
-        T[] newArray=(T[]) new Object[length/2];
-        int ptr1=head;
-        int ptr2=length/4;
-        while(ptr1!=tail)
-        {
-            newArray[ptr2]=items[ptr1];
-            ptr1=plusOne(ptr1,length);
-            ptr2=plusOne(ptr2,length/2);
+
+    private void shrink() {
+        T[] newArray = (T[]) new Object[length / 2];
+        int ptr1 = head;
+        int ptr2 = length / 4;
+        while (ptr1 != tail) {
+            newArray[ptr2] = items[ptr1];
+            ptr1 = plusOne(ptr1, length);
+            ptr2 = plusOne(ptr2, length / 2);
         }
-        head=length/4;
-        tail=ptr2;
-        items=newArray;
-        length/=2;
+        head = length / 4;
+        tail = ptr2;
+        items = newArray;
+        length /= 2;
     }
-    public void addFirst(T item)
-    {
-        if(size==length-1)
-        {
+
+    public void addFirst(T item) {
+        if (size == length - 1) {
             grow();
         }
-        head=minusOne(head);
-        items[head]=item;
+        head = minusOne(head);
+        items[head] = item;
         size++;
     }
-    public void addLast(T item)
-    {
-        if(size==length-1)
-        {
+
+    public void addLast(T item) {
+        if (size == length - 1) {
             grow();
         }
-        items[tail]=item;
-        tail=plusOne(tail,length);
+        items[tail] = item;
+        tail = plusOne(tail, length);
         size++;
     }
-    public T removeFirst()
-    {
-        if(length>=16&&length/size>=4)
-        {
+
+    public T removeFirst() {
+        if (length >= 16 && length / size >= 4) {
             shrink();
         }
-        if(size==0)
-        {
+        if (size == 0) {
             return null;
         }
-        T ret=items[head];
-        head=plusOne(head,length);
+        T ret = items[head];
+        head = plusOne(head, length);
         size--;
         return ret;
     }
-    public T removeLast()
-    {
-        if(length>=16&&length/size>=4)
-        {
+
+    public T removeLast() {
+        if (length >= 16 && length / size >= 4) {
             shrink();
         }
-        if(size==0)
-        {
+        if (size == 0) {
             return null;
         }
-        T ret=items[tail];
-        items[tail]=null;
-        tail=minusOne(tail);
+        T ret = items[tail];
+        items[tail] = null;
+        tail = minusOne(tail);
         size--;
         return ret;
     }
-    public T get(int index)
-    {
-        if(index>=size)
-        {
+
+    public T get(int index) {
+        if (index >= size) {
             return null;
         }
-        int ptr=head;
-        for(int i=0;i<index;i++)
-        {
-            ptr=plusOne(ptr,length);
+        int ptr = head;
+        for (int i = 0; i < index; i++) {
+            ptr = plusOne(ptr, length);
         }
         return items[ptr];
     }
-    public void printDeque()
-    {
-        int ptr=head;
-        while(ptr!=tail)
-        {
-            System.out.print(items[ptr]+" ");
-            ptr=plusOne(ptr,length);
+
+    public void printDeque() {
+        int ptr = head;
+        while (ptr != tail) {
+            System.out.print(items[ptr] + " ");
+            ptr = plusOne(ptr, length);
         }
     }
 }
