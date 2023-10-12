@@ -38,7 +38,7 @@ public class ArrayDeque<T> {
     private void newSize(int newLength) {
         T[] newItems = (T[]) new Object[newLength];
         int tem1 = head;
-        for (int i = 0; i <size; i++) {
+        for (int i = 0; i < size; i++) {
             newItems[i] = items[head];
             head = plusOne(head, items.length);
         }
@@ -53,6 +53,7 @@ public class ArrayDeque<T> {
         }
         size += 1;
     }
+
     public void addLast(T t) {
         tail = plusOne(tail, items.length);
         items[tail] = t;
@@ -61,6 +62,7 @@ public class ArrayDeque<T> {
         }
         size += 1;
     }
+
     public T removeFirst() {
         T ret = items[head];
         items[head] = null;
@@ -74,6 +76,7 @@ public class ArrayDeque<T> {
         size -= 1;
         return ret;
     }
+
     public T removeLast() {
         T ret = items[tail];
         items[tail] = null;
@@ -87,21 +90,21 @@ public class ArrayDeque<T> {
         size -= 1;
         return ret;
     }
-    public void printDeque()
-    {
-        int temp=head;
-        for(int i=0;i<size;i++)
-        {
-            System.out.print(items[temp]+" ");
-            temp=plusOne(temp, items.length);
+
+    public void printDeque() {
+        int temp = head;
+        for (int i = 0; i < size; i++) {
+            System.out.print(items[temp] + " ");
+            temp = plusOne(temp, items.length);
         }
     }
+
     public T get(int index) {
         if (index >= size) {
             return null;
         }
         int ptr = head;
-        for (int i = 0; i <=size; i++) {
+        for (int i = 0; i < index; i++) {
             ptr = plusOne(ptr, items.length);
         }
         return items[ptr];
