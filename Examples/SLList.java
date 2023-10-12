@@ -1,9 +1,9 @@
-public class SLList {
-    private static class IntNode {
-        public  int item;
-        public IntNode next;
+public class SLList<T> {
+    public class IntNode {
+        private  T item;
+        private IntNode next;
 
-        public IntNode(int i, IntNode n)
+        public IntNode(T i, IntNode n)
         {
             item=i;
             next=n;
@@ -15,25 +15,25 @@ public class SLList {
 
     public SLList()
     {
-        sentinel=new IntNode(63,null);
+        sentinel=new IntNode(null,null);
         size=0;
     }
-    public SLList(int x) {
-        sentinel=new IntNode(63,null);
+    public SLList(T x) {
+        sentinel=new IntNode(null,null);
         sentinel.next=new IntNode(x,null);
         size = 1;
     }
-    public void addFirst(int x)
+    public void addFirst(T x)
     {
         sentinel.next=new IntNode(x,sentinel.next);
         this.first=new IntNode(x,this.first);
         size+=1;
     }
-    public int getFirst()
+    public T getFirst()
     {
         return sentinel.next.item;
     }
-    public  void addLast(int x)
+    public  void addLast(T x)
     {
         size+=1;
         IntNode p=sentinel;
@@ -42,6 +42,19 @@ public class SLList {
             p=p.next;
         }
         p.next=new IntNode(x,null);
+    }
+    public T get(int index)
+    {
+        if(index<0||index>size)
+        {
+            return null;
+        }
+        IntNode t=sentinel;
+        for(int i=0;i<index;i++)
+        {
+            t=t.next;
+        }
+        return t.item;
     }
     public  int size()
     {
