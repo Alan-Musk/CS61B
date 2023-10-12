@@ -21,18 +21,18 @@ public class ArrayDequeTest {
         dq.addLast("last");
         assertEquals(3, dq.size());
 
-//        dq.printDeque();
-//
-//        String first = dq.removeFirst();
-//        assertEquals("first", first);
-//
-//        String last = dq.removeLast();
-//        assertEquals("last", last);
-//
-//        assertEquals(1, dq.size());
-//
-//        dq.removeFirst();
-//        assertTrue(dq.isEmpty());
+        dq.printDeque();
+
+        String first = dq.removeFirst();
+        assertEquals("first", first);
+
+        String last = dq.removeLast();
+        assertEquals("last", last);
+
+        assertEquals(1, dq.size());
+
+        dq.removeFirst();
+        assertTrue(dq.isEmpty());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ArrayDequeTest {
         privateField.setAccessible(true);
 
         // 获取字段的值
-        // int value = (int) privateField.get(dq);
+         int value = (int) privateField.get(dq);
 
         for (int i = 0; i < 7; i++) {
             dq.addLast(i);
@@ -66,34 +66,34 @@ public class ArrayDequeTest {
         }
         assertEquals(32, (int) privateField.get(dq));
 
-//        for (int i = 0; i < 17; i++) {
-//            dq.removeFirst();
-//        }
-//        assertEquals(32, (int) privateField.get(dq));
-//        dq.removeFirst();
-//        System.out.println("size:" + dq.size() + ",length:" + (int) privateField.get(dq));
-//        assertEquals(32, (int) privateField.get(dq));
-//
-//        for (int i = 0; i < 64; i++) {
-//            dq.addLast(i);
-//        }
-//        assertEquals(128, (int) privateField.get(dq));
-//
-//        for (int i = 0; i < 40; i++) {
-//            dq.removeLast();
-//        }
+        for (int i = 0; i < 17; i++) {
+            dq.removeFirst();
+        }
+        assertEquals(32, (int) privateField.get(dq));
+        dq.removeFirst();
+        System.out.println("size:" + dq.size() + ",length:" + (int) privateField.get(dq));
+        assertEquals(32, (int) privateField.get(dq));
+
+        for (int i = 0; i < 64; i++) {
+            dq.addLast(i);
+        }
+        assertEquals(128, (int) privateField.get(dq));
+
+        for (int i = 0; i < 40; i++) {
+            dq.removeLast();
+        }
         System.out.println("size:" + dq.size() + ",length:" + (int) privateField.get(dq) +
                 ",length / size:" + (int) privateField.get(dq) / dq.size());
-//        dq.removeLast();
+        dq.removeLast();
         System.out.println("size:" + dq.size() + ",length:" + (int) privateField.get(dq) +
                 ",length / size:" + (int) privateField.get(dq) / dq.size());
         assertEquals(64, (int) privateField.get(dq));
 
     }
-
-    @Test
-    public void testisEmpty() {
-        ArrayDeque<String> arrayDeque = new ArrayDeque<>();
-        assertTrue(arrayDeque.isEmpty());
-    }
+//
+//    @Test
+//    public void testisEmpty() {
+//        ArrayDeque<String> arrayDeque = new ArrayDeque<>();
+//        assertTrue(arrayDeque.isEmpty());
+//    }
 }
