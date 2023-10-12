@@ -7,7 +7,7 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         items = (T[]) new Object[8];
         head = 0;
-        tail = -1;
+        tail =items.length-1;
         size = 0;
     }
 
@@ -37,12 +37,14 @@ public class ArrayDeque<T> {
 
     private void newSize(int newLength) {
         T[] newItems = (T[]) new Object[newLength];
-        int tem1 = head;
-        for (int i = 0; i < size; i++) {
-            newItems[i] = items[head];
-            head = plusOne(head, items.length);
+        int temp = head;
+        for (int i = 0; i <=size; i++) {
+            newItems[i] = items[temp];
+            temp = plusOne(temp, items.length);
         }
         items = newItems;
+        tail=size;
+        head=0;
     }
 
     public void addFirst(T t) {
@@ -64,28 +66,28 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        T ret = items[head];
-        items[head] = null;
-        if (size == 0) {
-            return null;
-        }
         if (size == items.length / 4 && size >= 16) {
             newSize(items.length / 2);
         }
+        if (size == 0) {
+            return null;
+        }
+        T ret = items[head];
+        items[head] = null;
         head = plusOne(head, items.length);
         size -= 1;
         return ret;
     }
 
     public T removeLast() {
-        T ret = items[tail];
-        items[tail] = null;
-        if (size == 0) {
-            return null;
-        }
         if (size == items.length / 4 && size >= 16) {
             newSize(items.length / 2);
         }
+        if (size == 0) {
+            return null;
+        }
+        T ret = items[tail];
+        items[tail] = null;
         tail = minusOne(tail);
         size -= 1;
         return ret;

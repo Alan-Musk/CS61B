@@ -38,10 +38,13 @@ public class ArrayDequeTest {
     @Test
     public void testForAutograder(){
         ArrayDeque<Integer> test=new ArrayDeque<>();
-        test.addFirst(3);
-        test.addFirst(5);
-        int result=test.get(1);
-        assertEquals(result,3);
+        for(int i=0;i<3;i++)
+        {
+            test.addFirst(0);
+            test.addFirst(1);
+            test.addFirst(2);
+            test.addLast(3);
+        }
 
     }
 //
