@@ -36,10 +36,9 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void testForAutograder(){
-        ArrayDeque<Integer> test=new ArrayDeque<>();
-        for(int i=0;i<3;i++)
-        {
+    public void testForAutograder() {
+        ArrayDeque<Integer> test = new ArrayDeque<>();
+        for (int i = 0; i < 3; i++) {
             test.addFirst(0);
             test.addFirst(1);
             test.addFirst(2);
@@ -47,7 +46,8 @@ public class ArrayDequeTest {
         }
 
     }
-//
+
+    //
 //    @Test
     public void testisEmpty() {
         ArrayDeque<String> arrayDeque = new ArrayDeque<>();

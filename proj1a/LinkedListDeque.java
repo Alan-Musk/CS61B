@@ -1,9 +1,9 @@
 public class LinkedListDeque<T> {
     // Helper class
     private class Node {
-        public T item;
-        public Node prev;
-        public Node next;
+        private T item;
+        private Node prev;
+        private Node next;
 
         public Node(Node p, T i, Node n) {
             this.item = i;
@@ -79,7 +79,7 @@ public class LinkedListDeque<T> {
             return null;
         }
         T res = sentinel.prev.item;
-        sentinel.prev.prev.next=sentinel;
+        sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
         size -= 1;
         return res;
