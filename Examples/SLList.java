@@ -1,69 +1,128 @@
-public class SLList<T> {
-    public class IntNode {
-        private  T item;
-        private IntNode next;
+/* Represent a list of stuff, where all the "list" work is delegated
+ * to a naked recursive data structure. */
 
-        public IntNode(T i, IntNode n)
-        {
-            item=i;
-            next=n;
+public class SLList<Blorp> implements List61B<Blorp> {
+    public class Node {
+        public Blorp item;     /* Equivalent of first */
+        public Node next; /* Equivalent of rest */
+
+        public Node(Blorp i, Node h) {
+            item = i;
+            next = h;
         }
     }
-    private IntNode first;
-    private IntNode sentinel;
+
+    private Node sentinel;
     private int size;
 
-    public SLList()
-    {
-        sentinel=new IntNode(null,null);
-        size=0;
+    /** Creates an empty list. */
+    public SLList() {
+        size = 0;
+        sentinel = new Node(null, null);
     }
-    public SLList(T x) {
-        sentinel=new IntNode(null,null);
-        sentinel.next=new IntNode(x,null);
+
+    public SLList(Blorp x) {
         size = 1;
+        sentinel = new Node(null, null);
+        sentinel.next = new Node(x, null);
     }
-    public void addFirst(T x)
-    {
-        sentinel.next=new IntNode(x,sentinel.next);
-        this.first=new IntNode(x,this.first);
-        size+=1;
+
+    /** Adds an item of the front. */
+    public void addFirst(Blorp x) {
+        Node oldFrontNode = sentinel.next;
+        Node newNode = new Node(x, oldFrontNode);
+        sentinel.next = newNode;
+        size += 1;
     }
-    public T getFirst()
-    {
+
+    /** Gets the front item of the list. */
+    public Blorp getFirst() {
         return sentinel.next.item;
     }
-    public  void addLast(T x)
-    {
-        size+=1;
-        IntNode p=sentinel;
-        while(p.next!=null)
-        {
-            p=p.next;
+
+    /** Puts an item at the back of the list. */
+    public void addLast(Blorp x) {
+        size += 1;
+
+        Node p = sentinel;
+
+        /* Move p until it reaches the end. */
+        while (p.next != null) {
+            p = p.next;
         }
-        p.next=new IntNode(x,null);
+
+        p.next = new Node(x, null);
     }
-    public T get(int index)
-    {
-        if(index<0||index>size)
-        {
+
+    /** Returns the back node of our list. */
+    private Node getLastNode() {
+        Node p = sentinel;
+
+        /* Move p until it reaches the end. */
+        while (p.next != null) {
+            p = p.next;
+        }
+        return p;
+    }
+
+    /** Returns last item */
+    public Blorp getLast() {
+        Node back = getLastNode();
+        return back.item;
+    }
+
+    /** Deletes and returns last item. */
+    public Blorp removeLast() {
+        Node back = getLastNode();
+        if (back == sentinel) {
             return null;
         }
-        IntNode t=sentinel;
-        for(int i=0;i<index;i++)
-        {
-            t=t.next;
+        size = size - 1;
+        Node p = sentinel;
+
+        while (p.next != back) {
+            p = p.next;
         }
-        return t.item;
+        p.next = null;
+        return back.item;
     }
-    public  int size()
-    {
+
+    public int size() {
         return size;
     }
-    public static void main(String[] args) {
-        SLList L=new SLList();
-        L.addLast(5);
-        L.addFirst(10);
-        System.out.println( L.getFirst());
+
+    /** Gets the positionth item of the list. */
+    public Blorp get(int position) {
+        if (position == 0) {
+            return getFirst();
+        }
+        Node currentNode = sentinel.next.next;
+        while (position > 1 && currentNode.next != null) {
+            position -= 1;
+            currentNode = currentNode.next;
+        }
+
+        return currentNode.item;
     }
-}
+
+    /** Inserts item into given position.
+     * Code from discussion #3 */
+    public void insert(Blorp item, int position) {
+        if (sentinel.next == null || position == 0) {
+            addFirst(item);
+            return;
+        }
+
+        Node currentNode = sentinel.next.next;
+        while (position > 1 && currentNode.next != null) {
+            position -= 1;
+            currentNode = currentNode.next;
+        }
+
+        Node newNode = new Node(item, currentNode.next);
+        currentNode.next = newNode;
+    }
+
+    /** TODO: Add a print method that overrides List61B's inefficient print method. */
+
+} 

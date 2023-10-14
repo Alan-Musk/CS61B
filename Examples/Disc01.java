@@ -1,4 +1,4 @@
-public class Disc_01 {
+public class Disc01 {
     public static void main(String[] args) {
         System.out.println(fib2(6,0,0,1));
     }

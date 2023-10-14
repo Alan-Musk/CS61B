@@ -1,6 +1,6 @@
 import org.junit.Test;
 
-public class Disc2 {
+public class Disc02 {
     public static IntList square(IntList L)
     {
         if(L==null){
