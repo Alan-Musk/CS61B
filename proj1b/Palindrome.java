@@ -8,16 +8,19 @@ public class Palindrome {
         }
         return (Deque<Character>) words;
     }
+    private boolean recurision(Deque<Character> words)
+    {
+        if(words.isEmpty()||words.size()==1)
+        {
+            return true;
+        } else if (words.removeFirst()==words.removeLast()) {
+            return recurision(words);
+        }
+        return false;
+    }
     public boolean isPalindrome(String word)
     {
         Deque<Character> words=wordToDeque(word);
-        while(words.removeFirst()==words.removeLast())
-        {
-            if(words.isEmpty())
-            {
-                return true;
-            }
-        }
-        return false;
+        return recurision(words);
     }
 }
