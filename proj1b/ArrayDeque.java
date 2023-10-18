@@ -1,4 +1,4 @@
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T>{
     private T[] items; //数据
     private int head;
     private int tail;
@@ -8,12 +8,6 @@ public class ArrayDeque<T> {
         head = 0;
         tail = items.length - 1;
         size = 0;
-    }
-    public boolean isEmpty() {
-        return size == 0;
-    }
-    public int size() {
-        return size;
     }
     private int minusOne(int index) {
         if (index == 0) {
@@ -39,6 +33,15 @@ public class ArrayDeque<T> {
         tail = size;
         head = 0;
     }
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+    @Override
+    public int size() {
+        return size;
+    }
+    @Override
     public void addFirst(T t) {
         head = minusOne(head);
         items[head] = t;
@@ -47,6 +50,7 @@ public class ArrayDeque<T> {
         }
         size += 1;
     }
+    @Override
     public void addLast(T t) {
         tail = plusOne(tail, items.length);
         items[tail] = t;
@@ -55,6 +59,7 @@ public class ArrayDeque<T> {
         }
         size += 1;
     }
+    @Override
     public T removeFirst() {
         if (size == items.length / 4 && size >= 16) {
             newSize(items.length / 2);
@@ -68,6 +73,7 @@ public class ArrayDeque<T> {
         size -= 1;
         return ret;
     }
+    @Override
     public T removeLast() {
         if (size == items.length / 4 && size >= 16) {
             newSize(items.length / 2);
@@ -81,6 +87,7 @@ public class ArrayDeque<T> {
         size -= 1;
         return ret;
     }
+    @Override
     public void printDeque() {
         int temp = head;
         for (int i = 0; i < size; i++) {
@@ -88,6 +95,7 @@ public class ArrayDeque<T> {
             temp = plusOne(temp, items.length);
         }
     }
+    @Override
     public T get(int index) {
         if (index >= size) {
             return null;
