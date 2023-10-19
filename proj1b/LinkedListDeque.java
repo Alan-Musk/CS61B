@@ -1,4 +1,4 @@
-public class LinkedListDeque<T> implements Deque<T>{
+public class LinkedListDeque<T> implements Deque<T> {
     // Helper class
     private class Node {
         private T item;
@@ -105,6 +105,7 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
         return current.item;
     }
+
     public T getRecursive(int index) {
         if (index < 0 || index >= size) {
             return null;
