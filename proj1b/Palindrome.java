@@ -23,4 +23,24 @@ public class Palindrome {
         Deque<Character> words=wordToDeque(word);
         return recurision(words);
     }
+    private boolean recurisionOffByOne(Deque<Character> words,CharacterComparator cc)
+    {
+        if(words.isEmpty()||words.size()==1)
+        {
+            return true;
+        }else if (cc.equalChars(words.removeFirst(), words.removeLast())) {
+            return recurisionOffByOne(words,cc);
+        }
+        return false;
+
+    }
+    public boolean isPalindrome(String word,CharacterComparator cc)
+    {
+        Deque<Character> words=wordToDeque(word);
+        if(recurisionOffByOne(words,cc))
+        {
+            return true;
+        }
+        return false;
+    }
 }
