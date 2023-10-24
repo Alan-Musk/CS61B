@@ -1,108 +1,90 @@
-/**
- * Array based list.
- *
- * @author Josh Hug
+/** Array based list.
+ *  @author Josh Hug
  */
 
-public class AList<T> implements List61B<T> {
-    private T[] items; //数据
-    private int head;
-    private int tail;
+//         0 1  2 3 4 5 6 7
+// items: [6 9 -1 2 0 0 0 0 ...]
+// size: 5
+
+/* Invariants:
+ addLast: The next item we want to add, will go into position size
+ getLast: The item we want to return is in position size - 1
+ size: The number of items in the list should be size.
+*/
+
+public class AList<Item> implements List61B<Item> {
+    private Item[] items;
     private int size;
+
+    /** Creates an empty list. */
     public AList() {
-        items = (T[]) new Object[8];
-        head = 0;
-        tail = items.length - 1;
+        items = (Item[]) new Object[100];
         size = 0;
     }
-    public boolean isEmpty() {
-        return size == 0;
-    }
+
+    /** Inserts item into given position.
+     * Code from discussion #3 */
     @Override
+    public void insert(Item x, int position) {
+        Item[] newItems = (Item[]) new Object[items.length + 1];
+
+        System.arraycopy(items, 0, newItems, 0, position);
+        newItems[position] = x;
+
+        System.arraycopy(items, position, newItems, position + 1, items.length - position);
+        items = newItems;
+    }
+
+    /** Resizes the underlying array to the target capacity. */
+    private void resize(int capacity) {
+        Item[] a = (Item[]) new Object[capacity];
+        System.arraycopy(items, 0, a, 0, size);
+        items = a;
+    }
+
+    /** Inserts an item at the front. */
+    @Override
+    public void addFirst(Item x) {
+        insert(x, 0);
+    }
+
+    /** Inserts X into the back of the list. */
+    @Override
+    public void addLast(Item x) {
+        if (size == items.length) {
+            resize(size + 1);
+        }
+
+        items[size] = x;
+        size = size + 1;
+    }
+
+    /** Gets an item from the front. */
+    @Override
+    public Item getFirst() {
+        return get(0);
+    }
+
+    /** Returns the item from the back of the list. */
+    public Item getLast() {
+        return items[size - 1];
+    }
+    /** Gets the ith item in the list (0 is the front). */
+    public Item get(int i) {
+        return items[i];
+    }
+
+    /** Returns the number of items in the list. */
     public int size() {
         return size;
     }
-    private int minusOne(int index) {
-        if (index == 0) {
-            return items.length - 1;
-        }
-        return index - 1;
+
+    /** Deletes item from back of the list and
+     * returns deleted item. */
+    public Item removeLast() {
+        Item x = getLast();
+        items[size - 1] = null;
+        size = size - 1;
+        return x;
     }
-    private int plusOne(int index, int module) {
-        index %= module;  //防止数据溢出
-        if (index == module - 1) {
-            return 0;
-        }
-        return index + 1;
-    }
-    private void newSize(int newLength) {
-        T[] newItems = (T[]) new Object[newLength];
-        int temp = head;
-        for (int i = 0; i <= size; i++) {
-            newItems[i] = items[temp];
-            temp = plusOne(temp, items.length);
-        }
-        items = newItems;
-        tail = size;
-        head = 0;
-    }
-    public void addFirst(T t) {
-        head = minusOne(head);
-        items[head] = t;
-        if (size == items.length - 1) {
-            newSize(items.length * 2);
-        }
-        size += 1;
-    }
-    public void addLast(T t) {
-        tail = plusOne(tail, items.length);
-        items[tail] = t;
-        if (size == items.length - 1) {
-            newSize(items.length * 2);
-        }
-        size += 1;
-    }
-    public T removeFirst() {
-        if (size == items.length / 4 && size >= 16) {
-            newSize(items.length / 2);
-        }
-        if (size == 0) {
-            return null;
-        }
-        T ret = items[head];
-        items[head] = null;
-        head = plusOne(head, items.length);
-        size -= 1;
-        return ret;
-    }
-    public T removeLast() {
-        if (size == items.length / 4 && size >= 16) {
-            newSize(items.length / 2);
-        }
-        if (size == 0) {
-            return null;
-        }
-        T ret = items[tail];
-        items[tail] = null;
-        tail = minusOne(tail);
-        size -= 1;
-        return ret;
-    }
-    public void printDeque() {
-        int temp = head;
-        for (int i = 0; i < size; i++) {
-            System.out.print(items[temp] + " ");
-            temp = plusOne(temp, items.length);
-        }
-    }
-    public T get(int index) {
-        if (index >= size) {
-            return null;
-        }
-        int ptr = head;
-        for (int i = 0; i < index; i++) {
-            ptr = plusOne(ptr, items.length);
-        }
-        return items[ptr];
-    }
-} 
+}

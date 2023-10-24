@@ -77,6 +77,7 @@ public class SLList<Blorp> implements List61B<Blorp> {
         if (back == sentinel) {
             return null;
         }
+
         size = size - 1;
         Node p = sentinel;
 
@@ -125,4 +126,4 @@ public class SLList<Blorp> implements List61B<Blorp> {
 
     /** TODO: Add a print method that overrides List61B's inefficient print method. */
 
-} 
+}
