@@ -1,5 +1,5 @@
 package synthesizer;
-public abstract class AbstractBoundedQueue<T> implements BoudedQueue<T> {
+public abstract class AbstractBoundedQueue<T> implements BoundedQueue<T> {
     protected int fillCount;
     protected int capacity;
     @Override
@@ -16,13 +16,13 @@ public abstract class AbstractBoundedQueue<T> implements BoudedQueue<T> {
     @Override
     public boolean isEmpty()
     {
-        return BoudedQueue.super.isEmpty();
+        return BoundedQueue.super.isEmpty();
     }
 
     @Override
     public boolean isFull()
     {
-        return BoudedQueue.super.isFull();
+        return BoundedQueue.super.isFull();
     }
 
     public abstract T peek();

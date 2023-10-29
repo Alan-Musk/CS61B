@@ -1,5 +1,5 @@
 // TODO: Make sure to make this class a part of the synthesizer package
-// package <package name>;
+package synthesizer;
 import synthesizer.AbstractBoundedQueue;
 
 import java.util.Iterator;
@@ -22,15 +22,6 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
             x=0;
         }
         return 0;
-    }
-    private int minusOne(int x)
-    {
-        x-=1;
-        if (x<0)
-        {
-            x=capacity()-1;
-        }
-        return x;
     }
     /**
      * Create a new ArrayRingBuffer with the given capacity.
@@ -55,6 +46,13 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      */
     public void enqueue(T x) {
         // TODO: Enqueue the item. Don't forget to increase fillCount and update last.
+        if(isFull())
+        {
+            throw new IllegalStateException("The queue is already full,can't add any new items");
+        }
+        rb[last]=x;
+        last=plusOne(last);
+        fillCount+=1;
     }
 
     /**
@@ -63,7 +61,15 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * covered Monday.
      */
     public T dequeue() {
-        // TODO: Dequeue the first item. Don't forget to decrease fillCount and update 
+        // TODO: Dequeue the first item. Don't forget to decrease fillCount and update
+        if(isEmpty())
+        {
+            throw new IllegalStateException("The queue is empty");
+        }
+        T temp=rb[first];
+        first=plusOne(first);
+        fillCount-=1;
+        return temp;
     }
 
     /**
@@ -71,6 +77,11 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      */
     public T peek() {
         // TODO: Return the first item. None of your instance variables should change.
+        if(isEmpty())
+        {
+            throw new IllegalStateException("The queue is empty");
+        }
+        return rb[first];
     }
 
     // TODO: When you get to part 5, implement the needed code to support iteration.
