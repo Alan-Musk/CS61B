@@ -11,11 +11,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     private T[] rb;
 
     private int plusOne(int x) {
-        x += 1;
-        if (x == capacity()) {
-            x = 0;
-        }
-        return 0;
+        return (x+1)%capacity();
     }
 
     /**
@@ -63,26 +59,26 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      */
     public T peek() {
         if (isEmpty()) {
-            throw new IllegalStateException("The queue is empty");
+            throw new RuntimeException("Ring Buffer Overflow");
         }
         return rb[first];
     }
 
     public Iterator<T> iterator() {
-        return new HwIterator();
+        return new ArrayRingBufferIterator();
     }
 
-    private class HwIterator implements Iterator<T> {
+    private class ArrayRingBufferIterator implements Iterator<T> {
         private int num;
 
-        public HwIterator() {
-            num = 0;
+        public ArrayRingBufferIterator() {
+            num = first;
         }
-
+        @Override
         public boolean hasNext() {
-            return num < fillCount;
+            return plusOne(num) < fillCount;
         }
-
+        @Override
         public T next() {
             T returnItem = rb[num];
             num += 1;
