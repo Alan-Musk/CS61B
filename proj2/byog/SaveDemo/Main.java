@@ -26,6 +26,7 @@ public class Main {
                     case 'q':
                         saveWorld(w);
                         System.exit(0);
+                        System.out.println(1);
                         break;
                     default:
                 }
