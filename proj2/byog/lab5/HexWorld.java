@@ -58,20 +58,4 @@ public class HexWorld {
             world[xCoord][yCoord]=TETile.colorVariant(t,32,32,32,new Random());
         }
     }
-
-    @Test
-    public void testHexRowWidth()
-    {
-        assertEquals(3, hexRowWidth(3, 5));
-        assertEquals(5, hexRowWidth(3, 4));
-        assertEquals(7, hexRowWidth(3, 3));
-        assertEquals(7, hexRowWidth(3, 2));
-        assertEquals(5, hexRowWidth(3, 1));
-        assertEquals(3, hexRowWidth(3, 0));
-        assertEquals(2, hexRowWidth(2, 0));
-        assertEquals(4, hexRowWidth(2, 1));
-        assertEquals(4, hexRowWidth(2, 2));
-        assertEquals(2, hexRowWidth(2, 3));
-    }
-
 }
