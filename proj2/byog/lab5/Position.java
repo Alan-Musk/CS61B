@@ -1,10 +1,12 @@
 package byog.lab5;
 
-public class Position {
+import byog.TileEngine.TETile;
+
+public class position {
     private int x;
     private int y;
 
-    public Position(int x,int y)
+    public position(int x,int y)
     {
         this.x=x;
         this.y=y;
@@ -25,4 +27,5 @@ public class Position {
     {
         return x;
     }
+
 }

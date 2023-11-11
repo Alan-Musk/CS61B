@@ -1,4 +1,5 @@
 package byog.lab5;
+import byog.Core.Position;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -13,7 +14,7 @@ import java.util.Random;
  * Draws a world consisting of hexagonal regions.
  */
 public class HexWorld {
-    public static void addHexagon(TETile[][] world,Position p,int s,TETile t)
+    public static void addHexagon(TETile[][] world, Position p, int s, TETile t)
     {
 
         if(s<2)
