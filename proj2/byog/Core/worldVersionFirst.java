@@ -3,9 +3,9 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
-import byog.lab5.Position;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -15,7 +15,8 @@ public class worldVersionFirst {
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
     private int previousSeed = 0;
-    private Set<Position> polePoints=new HashSet<>();//方块的极点
+    private Set<Position> polePoints = new HashSet<>();//方块的极点
+
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
@@ -82,23 +83,19 @@ public class worldVersionFirst {
         }
         //链接各区块
         // 1.扫描全图 找到方块的极点 helper function
-        for(int i=0;i<WIDTH-1;i++)
-        {
-            for(int j=0;i<HEIGHT-1;j++)
-            {
+        for (int i = 0; i < WIDTH - 1; i++) {
+            for (int j = 0; i < HEIGHT - 1; j++) {
                 //为避免没必要的扫描产生的性能消耗 noting->floor 此时的floor才进入辅助函数 而不是对每个floor都判断
-                if((tiles[i][j]==Tileset.NOTHING&&tiles[i+1][j]==Tileset.FLOOR))
-                {
-                    scanPolePoint(tiles,i+1,j);
-                }
-                else if(tiles[i][j]==Tileset.NOTHING&&tiles[i][j+1]==Tileset.FLOOR)
-                {
-                    scanPolePoint(tiles,i,j+1);
+                if ((tiles[i][j] == Tileset.NOTHING && tiles[i + 1][j] == Tileset.FLOOR)) {
+                    scanPolePoint(tiles, i + 1, j);
+                } else if (tiles[i][j] == Tileset.NOTHING && tiles[i][j + 1] == Tileset.FLOOR) {
+                    scanPolePoint(tiles, i, j + 1);
                 }
             }
         }
         // 2.通过hashset position来画趋向中心点的hallway 遇到floor就停止连通
         // 3.循环 知道hashset 为空
+
         // 贴瓷砖
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
@@ -107,23 +104,32 @@ public class worldVersionFirst {
                 }
             }
         }
-        tiles[WIDTH/2][HEIGHT/2]=Tileset.FLOWER;
+        tiles[WIDTH / 2][HEIGHT / 2] = Tileset.FLOWER;
         return tiles;
     }
 
-    private void scanPolePoint(TETile[][] tiles,int x,int y)
-    {
-        Position corePoint=new Position(WIDTH/2,HEIGHT/2);//中心点
-        //TODO:边界检查
-        while(tiles[x][y]==Tileset.FLOOR&&x+1<tiles.length&&y+1<tiles[0].length)
-        {
-            if(corePoint.getDistance(tiles[x+1][y]))
+    private void scanPolePoint(TETile[][] tiles, int x, int y) {
+        Position corePoint = new Position(WIDTH / 2, HEIGHT / 2);//中心点
+        Position tempPoint;
+        while (tiles[x][y] == Tileset.FLOOR && x + 1 < tiles.length && y + 1 < tiles[0].length) {
+            if (tiles[x][y + 1] == Tileset.FLOOR && tiles[x + 1][y] == Tileset.FLOOR) {
+                if (corePoint.getDistance(tempPoint = new Position(x, y + 1)) > corePoint.getDistance(tempPoint = new Position(x + 1, y))) {
+                    x = x + 1;
+                } else {
+                    y += 1;
+                }
+            }else if(tiles[x][y+1]==Tileset.FLOOR)
             {
-
+                y+=1;
+            }
+            else if(tiles[x+1][y]==Tileset.FLOOR){
+                x+=1;
+            }
+            else{
+                polePoints.add(tempPoint=new Position(x,y));
             }
         }
     }
-
     // 贴瓷砖的辅助方法 对周围九宫格如果不是floor就贴瓷砖
     private TETile[][] Tile(TETile[][] tiles, int x, int y) {
         for (int i = -1; i <= 1; i++) {
@@ -144,7 +150,6 @@ public class worldVersionFirst {
         TETile[][] randomTiles = new TETile[WIDTH][HEIGHT];
         worldVersionFirst test = new worldVersionFirst();
         randomTiles = test.playWithInputString("n12355sswwda");
-
         ter.renderFrame(randomTiles);
     }
 }
