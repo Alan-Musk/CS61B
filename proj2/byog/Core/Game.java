@@ -5,6 +5,7 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
 import java.util.*;
+
 public class Game {
     TERenderer ter = new TERenderer();
     //定义常量
@@ -17,7 +18,7 @@ public class Game {
     public static final int MIN_ROOM_HEIGHT = 2;
     public static final int MAX_ROOM_HEIGHT = 4;
     private long previousSeed = 0;
-    private ArrayList<Position> polePoints = new ArrayList<>();//方块的极点
+    private ArrayList<Position> polePoints = new ArrayList<>(); //方块的极点
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -111,7 +112,7 @@ public class Game {
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 if (tiles[i][j] == Tileset.FLOOR) {
-                    tiles = Tile(tiles, i, j);
+                    tiles = tile(tiles, i, j);
                 }
             }
         }
@@ -148,7 +149,7 @@ public class Game {
 
     // 从左下往右,上检测 找到是floor且最接近中心的点
     private void scanPolePoint(TETile[][] tiles, int startX, int startY, int roomWidth, int roomHeight) {
-        Position corePoint = new Position(WIDTH / 2, HEIGHT / 2);//中心点
+        Position corePoint = new Position(WIDTH / 2, HEIGHT / 2); //中心点
         Position closestPoint = null;
         Double minDistane = Double.MAX_VALUE;
         for (int x = startX; x < startX + roomWidth; x++) {
@@ -169,10 +170,11 @@ public class Game {
     }
 
     // 贴瓷砖的辅助方法 对周围九宫格如果不是floor就贴瓷砖
-    private TETile[][] Tile(TETile[][] tiles, int x, int y) {
+    private TETile[][] tile(TETile[][] tiles, int x, int y) {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (x + i >= 0 && y + j >= 0 && x + i < tiles.length && y + j < tiles[0].length && tiles[x + i][y + j] == Tileset.NOTHING) {
+                if (x + i >= 0 && y + j >= 0 && x + i < tiles.length && y + j < tiles[0].length
+                        && tiles[x + i][y + j] == Tileset.NOTHING) {
                     tiles[x + i][y + j] = Tileset.WALL;
                 }
             }

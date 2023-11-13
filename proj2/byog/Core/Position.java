@@ -19,19 +19,17 @@ public class Position {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        Position position=(Position) obj;
-        return x==position.x&&y==position.y;
+        Position position = (Position) obj;
+        return x == position.x && y == position.y;
     }
 
     @Override
-    public int hashCode()
-    {
-        return 31*x+y;
+    public int hashCode() {
+        return 31 * x + y;
     }
 
-    public double getDistance(Position p1)
-    {
-        double distance=Math.sqrt(Math.pow((this.getX()-p1.getX()),2)+Math.pow((this.getY()-p1.getY()),2));
+    public double getDistance(Position p1) {
+        double distance = Math.sqrt(Math.pow((this.getX() - p1.getX()), 2) + Math.pow((this.getY() - p1.getY()), 2));
         return distance;
     }
 
