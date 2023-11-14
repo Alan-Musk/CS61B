@@ -147,7 +147,7 @@ public class Game {
         }
     }
 
-    // 从左下往右,上检测 找到是floor且最接近中心的点
+    // 检测整个房间中是floor且最接近中心的点
     private void scanPolePoint(TETile[][] tiles, int startX, int startY, int roomWidth, int roomHeight) {
         Position corePoint = new Position(WIDTH / 2, HEIGHT / 2); //中心点
         Position closestPoint = null;
@@ -189,7 +189,7 @@ public class Game {
 
         TETile[][] randomTiles = new TETile[WIDTH][HEIGHT];
         Game test = new Game();
-        randomTiles = test.playWithInputString("n12355sswwda");
+        randomTiles = test.playWithInputString("n155sswwda");
         ter.renderFrame(randomTiles);
     }
 }
