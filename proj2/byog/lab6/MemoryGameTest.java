@@ -14,9 +14,9 @@ public class MemoryGameTest {
     }
 
     @Test
-    public void testDrawFrame()
+    public void testflashSequence()
     {
         MemoryGame test=new MemoryGame(40,40,13);
-        test.drawFrame(test.generateRandomString(5));
+        test.flashSequence(test.generateRandomString(5));
     }
 }
