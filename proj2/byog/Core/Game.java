@@ -24,29 +24,28 @@ public class Game {
     private ArrayList<Position> polePoints = new ArrayList<>(); //方块的极点
 
     // 设置Title和option的字体
-    private Font font_title=new Font("Monaco",Font.BOLD,40);
-    private Font font_options=new Font("Monaco",Font.TRUETYPE_FONT,20);
+    private Font font_title = new Font("Monaco", Font.BOLD, 40);
+    private Font font_options = new Font("Monaco", Font.TRUETYPE_FONT, 20);
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
-        while(true){
+        while (true) {
             // 绘制menu
             drawMenu();
             //读取选择字符
-            String choice=solicitNCharsInput(1);
-            if(choice.charAt(0)=='n')
-            {
+            String choice = solicitNCharsInput(1);
+            if (choice.charAt(0) == 'n') {
                 newGame();
                 break;
-            } else if (choice.charAt(0)=='l') {
+            } else if (choice.charAt(0) == 'l') {
                 StdDraw.clear(Color.WHITE);
                 break;
-            } else if (choice.charAt(0)=='q') {
+            } else if (choice.charAt(0) == 'q') {
                 StdDraw.clear(Color.WHITE);
                 System.exit(0);
-            }else {
+            } else {
                 StdDraw.clear(Color.BLACK);
                 drawText(WIDTH / 2, HEIGHT / 2, "BAD CHOICE,INPUT AGAIN!", font_title, Color.RED);
                 StdDraw.show();
@@ -55,52 +54,52 @@ public class Game {
         }
         StdDraw.show();
     }
+
     // 画出菜单
-    private void drawMenu()
-    {
+    private void drawMenu() {
         StdDraw.clear(Color.BLACK);
-        drawText(WIDTH*0.5,HEIGHT*0.9,"CS61B:   THE GAME",font_title,Color.RED);
-        drawText(WIDTH*0.5,HEIGHT*0.6,"Quit (Q)",font_options,Color.WHITE);
-        drawText(WIDTH*0.5,HEIGHT*0.6+2,"Load Game (L)",font_options,Color.WHITE);
-        drawText(WIDTH*0.5,HEIGHT*0.6+4,"New Game (N)",font_options,Color.WHITE);
+        drawText(WIDTH * 0.5, HEIGHT * 0.9, "CS61B:   THE GAME", font_title, Color.RED);
+        drawText(WIDTH * 0.5, HEIGHT * 0.6, "Quit (Q)", font_options, Color.WHITE);
+        drawText(WIDTH * 0.5, HEIGHT * 0.6 + 2, "Load Game (L)", font_options, Color.WHITE);
+        drawText(WIDTH * 0.5, HEIGHT * 0.6 + 4, "New Game (N)", font_options, Color.WHITE);
         StdDraw.show();
     }
+
     // play with keyboard 的N选项
-    private void newGame()
-    {
+    private void newGame() {
         TETile[][] finalWorldFrame = initializeWorld();
         StdDraw.clear(Color.BLACK);
-        drawText(WIDTH*0.5,HEIGHT*0.6,"Please set the seed of the world that you living:",font_options,Color.WHITE);
-
-        String s=solicitNCharsInput(1000);
+        drawText(WIDTH * 0.5, HEIGHT * 0.6, "Please set the seed of the world that you living:", font_options, Color.WHITE);
+        String d=solicitNCharsInput(1000);
+        System.out.print(d);
+        String s = "n" + d;
         StdOut.print(s);
-        long seed=analyzeSeed(s);
+        long seed = analyzeSeed(s);
         finalWorldFrame = worldGenerator(finalWorldFrame, seed);
         ter.renderFrame(finalWorldFrame);
     }
+
     // 画文本 左边距 下边距 文本内容 字体 颜色
-    private void drawText(double width,double height,String s,Font f,Color c)
-    {
+    private void drawText(double width, double height, String s, Font f, Color c) {
         StdDraw.setPenColor(c);
         StdDraw.setFont(f);
-        StdDraw.text(width,height,s);
+        StdDraw.text(width, height, s);
     }
+
     // 获取n字符 组合为string
     public String solicitNCharsInput(int n) {
-        StringBuilder sb=new StringBuilder("");
-        sb = new StringBuilder();
-        int j=0;
+        StringBuilder sb = new StringBuilder("");
+        int j = 0;
         while (sb.length() < n) {
             if (!StdDraw.hasNextKeyTyped()) {
                 continue;
             }
             char key = StdDraw.nextKeyTyped();
-            drawText(WIDTH*0.1+j,HEIGHT*0.4,String.valueOf(key), font_title,Color.RED);
+            drawText(WIDTH * 0.1 + j, HEIGHT * 0.4, String.valueOf(key), font_title, Color.RED);
             StdDraw.show();
             sb.append(key);
-            j+=2;
-            if(key=='s')
-            {
+            j += 2;
+            if (key == 's') {
                 break;
             }
         }
