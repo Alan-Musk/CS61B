@@ -6,6 +6,8 @@ public class Percolation {
     private int[][] square;
     private static final int OPEN=1;
     private static final int BLOCK=0;
+    WeightedQuickUnionUF wUFWidth;
+    WeightedQuickUnionUF wUFHeight;
     // create N-by-N grid, with all sites initially block
     public Percolation(int N) {
         try {
@@ -15,6 +17,8 @@ public class Percolation {
                     square[i][j]=BLOCK;
                 }
             }
+            wUFWidth=new WeightedQuickUnionUF(N);
+            wUFHeight=new WeightedQuickUnionUF(N);
         } catch (IllegalArgumentException e)
         {
             System.out.println("N不能小于等于0");
@@ -24,11 +28,14 @@ public class Percolation {
     // open the site (row,col) if it is not open already
     public void open(int row, int col) {
         this.square[row][col]=OPEN;
+        if(isOpen(row+1,col)) wUFWidth.union(row,row+1);
+        if(isOpen(row-1,col)) wUFWidth.union(row,row-1);
+        if(isOpen(row,col+1)) wUFHeight.union(col,col+1);
+        if(isOpen(row,col-1)) wUFHeight.union(col,col-1);
     }
 
     // is the site (row,col) open?
     public boolean isOpen(int row, int col) {
-
         return this.square[row][col]==OPEN;
     }
     // is the site (row, col) full?
@@ -39,15 +46,23 @@ public class Percolation {
     // number of open sites
     public int numberOfOpenSites()
     {
-        return 1;
+        int sum=0;
+        for (int i = 0; i < square.length; i++) {
+            for (int j = 0; j < square[0].length; j++) {
+                if (isOpen(i,j)) sum++;
+            }
+        }
+        return sum;
     }
     // does the system percolate?
     public boolean percolates()
     {
+
         return true;
     }
     // use the unit testing
     public static void main(String[] args) {
+        Percolation test=new Percolation(10);
 
     }
 }
