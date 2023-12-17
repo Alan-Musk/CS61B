@@ -14,7 +14,10 @@ public class Percolation {
 
     // create N-by-N grid, with all sites initially block
     public Percolation(int N) {
-        try {
+        if(isValid(N,1))
+        {
+            throw new IllegalArgumentException();
+        }
             grids= new int[N][N];
             topVirtual = N * N; //设置顶部虚拟节点
             bottomVirtual = N * N + 1; // 设置底部虚拟节点
@@ -29,10 +32,6 @@ public class Percolation {
                     grids[i][j] = BLOCK;
                 }
             }
-
-        } catch (IllegalArgumentException e) {
-            System.out.println("N不能小于等于0");
-        }
     }
 
     private int xyTo1D(int row, int col) {
@@ -68,8 +67,12 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        if (isValid(row, col) && grids[row][col] == BLOCK) return true;
-        return false;
+        if (!isValid(row, col)) throw new IllegalArgumentException();
+        if(!isOpen(row,col))
+        {
+            return false;
+        }
+        return wUF.connected(xyTo1D(row,col),topVirtual);
     }
 
     // number of open sites
@@ -80,11 +83,15 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
+        if(openSitesCount==0)
+        {
+            return false;
+        }
         return wUF.connected(topVirtual, bottomVirtual);
     }
 
     // use the unit testing
     public static void main(String[] args) {
-        Percolation test = new Percolation(10);
+        Percolation test = new Percolation(1);
     }
 }
