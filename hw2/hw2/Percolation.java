@@ -14,24 +14,20 @@ public class Percolation {
 
     // create N-by-N grid, with all sites initially block
     public Percolation(int N) {
-        if(isValid(N,1))
-        {
-            throw new IllegalArgumentException();
+        grids = new int[N][N];
+        topVirtual = N * N; //设置顶部虚拟节点
+        bottomVirtual = N * N + 1; // 设置底部虚拟节点
+        wUF = new WeightedQuickUnionUF(N * N + 2);
+        // 初始化时链接到虚拟节点
+        for (int i = 0; i < N; i++) {
+            wUF.union(xyTo1D(0, i), topVirtual);
+            wUF.union(xyTo1D(N - 1, i), bottomVirtual);
         }
-            grids= new int[N][N];
-            topVirtual = N * N; //设置顶部虚拟节点
-            bottomVirtual = N * N + 1; // 设置底部虚拟节点
-            wUF = new WeightedQuickUnionUF(N * N + 2);
-            // 初始化时链接到虚拟节点
-            for (int i = 0; i < N; i++) {
-                wUF.union(xyTo1D(0, i), topVirtual);
-                wUF.union(xyTo1D(N - 1, i), bottomVirtual);
+        for (int i = 0; i < grids.length; i++) {
+            for (int j = 0; j < grids[0].length; j++) {
+                grids[i][j] = BLOCK;
             }
-            for (int i = 0; i < grids.length; i++) {
-                for (int j = 0; j < grids[0].length; j++) {
-                    grids[i][j] = BLOCK;
-                }
-            }
+        }
     }
 
     private int xyTo1D(int row, int col) {
@@ -68,11 +64,10 @@ public class Percolation {
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
         if (!isValid(row, col)) throw new IllegalArgumentException();
-        if(!isOpen(row,col))
-        {
+        if (!isOpen(row, col)) {
             return false;
         }
-        return wUF.connected(xyTo1D(row,col),topVirtual);
+        return wUF.connected(xyTo1D(row, col), topVirtual);
     }
 
     // number of open sites
@@ -83,8 +78,7 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        if(openSitesCount==0)
-        {
+        if (openSitesCount == 0) {
             return false;
         }
         return wUF.connected(topVirtual, bottomVirtual);
