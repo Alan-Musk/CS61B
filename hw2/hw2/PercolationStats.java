@@ -1,27 +1,43 @@
 package hw2;
 
+import com.sun.jdi.Value;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+
 public class PercolationStats {
+    private double values[];
+    private Percolation percolation;
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N,int T,PercolationFactory pf)
     {
-
+        values=new double[T];
+        for (int i = 0; i < T; i++) {
+            percolation=pf.make(N);
+            while(!percolation.percolates())
+            {
+                percolation.open(StdRandom.uniform(N),StdRandom.uniform(N));
+            }
+            values[i]=percolation.numberOfOpenSites()/(N*N);
+        }
     }
     // sample mean of percolation threshold
-    public double mean(){return 0.0;}
+    public double mean(){
+        return StdStats.mean(values);
+    }
 
     // sample standard deviation of percolation threshold
     public double stddev()
     {
-        return 0.0;
+        return StdStats.stddev(values);
     }
     // low endpoint of 95% confidence interval
     public double confidenceLow()
     {
-        return 0.0;
+        return mean()-(1.96*stddev())/Math.pow(values.length, 1/2);
     }
     // high endpoint of 95% condidence interval
     public double confidenceHigh()
     {
-        return 0.0;
+        return mean()+(1.96*stddev())/Math.pow(values.length, 1/2);
     }
 }

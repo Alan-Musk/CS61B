@@ -3,22 +3,34 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    private int[][] square;
+    private int[][] square;     //方格
     private static final int OPEN=1;
     private static final int BLOCK=0;
     private WeightedQuickUnionUF wUF;
-    private int openSitesCount;
+    private int openSitesCount; // Open节点总计数
+
+    private int topVirtual;//顶部虚拟节点
+    private int bottomVirtual;//底部虚拟节点
 
     // create N-by-N grid, with all sites initially block
     public Percolation(int N) {
         try {
+            topVirtual=N*N; //设置顶部虚拟节点
+            bottomVirtual=N*N+1;// 设置底部虚拟节点
+            wUF=new WeightedQuickUnionUF(N*N+2);
+            // 初始化时链接到虚拟节点
+            for(int i=0;i<N;i++)
+            {
+                wUF.union(xyTo1D(0,i),topVirtual);
+                wUF.union(xyTo1D(N-1,i),bottomVirtual);
+            }
             square=new int[N][N];
             for (int i = 0; i < square.length; i++) {
                 for (int j = 0; j < square[0].length; j++) {
                     square[i][j]=BLOCK;
                 }
             }
-            wUF=new WeightedQuickUnionUF(N*N);
+
         } catch (IllegalArgumentException e)
         {
             System.out.println("N不能小于等于0");
@@ -70,15 +82,7 @@ public class Percolation {
     // does the system percolate?
     public boolean percolates()
     {
-        for (int i = 0; i <square[0].length; i++) {
-            for (int j = 0; j < square[0].length; j++) {
-                if(wUF.connected(0, square.length-1)&&wUF.connected(i,j))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return wUF.connected(topVirtual,bottomVirtual);
     }
     // use the unit testing
     public static void main(String[] args) {
