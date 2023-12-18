@@ -6,7 +6,8 @@ public class Percolation {
     private int[][] grids;     //方格
     private static final int OPEN = 1;
     private static final int BLOCK = 0;
-    private WeightedQuickUnionUF wUF;
+    private WeightedQuickUnionUF wUF; // 用于渗透检查
+    private WeightedQuickUnionUF fullUF; //用于isfull()的检查 仅连接到顶部虚拟节点
     private int openSitesCount; // Open节点总计数
 
     private int topVirtual; //顶部虚拟节点
@@ -14,12 +15,15 @@ public class Percolation {
 
     // create N-by-N grid, with all sites initially block
     public Percolation(int N) {
+        if(N<=0) throw new IllegalArgumentException();
         grids = new int[N][N];
         topVirtual = N * N; //设置顶部虚拟节点
         bottomVirtual = N * N + 1; // 设置底部虚拟节点
         wUF = new WeightedQuickUnionUF(N * N + 2);
+        fullUF=new WeightedQuickUnionUF(N*N+1);
         // 初始化时链接到虚拟节点
         for (int i = 0; i < N; i++) {
+            fullUF.union(xyTo1D(0,i),topVirtual);
             wUF.union(xyTo1D(0, i), topVirtual);
             wUF.union(xyTo1D(N - 1, i), bottomVirtual);
         }
@@ -43,13 +47,17 @@ public class Percolation {
             grids[row][col] = OPEN;
             openSitesCount++;
             int current = xyTo1D(row, col);
-            if (isOpen(row + 1, col)) wUF.union(current, xyTo1D(row + 1, col));
-            if (isOpen(row - 1, col)) wUF.union(current, xyTo1D(row - 1, col));
-            if (isOpen(row, col + 1)) wUF.union(current, xyTo1D(row, col + 1));
-            if (isOpen(row, col - 1)) wUF.union(current, xyTo1D(row, col - 1));
+            if (isOpen(row + 1, col)) intoUF(current,row+1,col);
+            if (isOpen(row - 1, col)) intoUF(current,row-1,col);
+
+            if (isOpen(row, col + 1)) intoUF(current,row,col+1);
+            if (isOpen(row, col - 1)) intoUF(current,row,col-1);
         }
     }
-
+    private void intoUF(int current,int row,int col){
+        wUF.union(current,xyTo1D(row,col));
+        fullUF.union(current,xyTo1D(row,col));
+    }
     // 判断数组的边界
     private boolean isValid(int row, int col) {
         return row >= 0 && row < grids.length && col >= 0 && col < grids[row].length;
@@ -67,7 +75,7 @@ public class Percolation {
         if (!isOpen(row, col)) {
             return false;
         }
-        return wUF.connected(xyTo1D(row, col), topVirtual);
+        return fullUF.connected(xyTo1D(row, col), topVirtual);
     }
 
     // number of open sites
