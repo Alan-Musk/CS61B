@@ -15,15 +15,15 @@ public class Percolation {
 
     // create N-by-N grid, with all sites initially block
     public Percolation(int N) {
-        if(N<=0) throw new IllegalArgumentException();
+        if (N <= 0) throw new IllegalArgumentException();
         grids = new int[N][N];
         topVirtual = N * N; //设置顶部虚拟节点
         bottomVirtual = N * N + 1; // 设置底部虚拟节点
         wUF = new WeightedQuickUnionUF(N * N + 2);
-        fullUF=new WeightedQuickUnionUF(N*N+1);
+        fullUF = new WeightedQuickUnionUF(N * N + 1);
         // 初始化时链接到虚拟节点
         for (int i = 0; i < N; i++) {
-            fullUF.union(xyTo1D(0,i),topVirtual);
+            fullUF.union(xyTo1D(0, i), topVirtual);
             wUF.union(xyTo1D(0, i), topVirtual);
             wUF.union(xyTo1D(N - 1, i), bottomVirtual);
         }
@@ -47,17 +47,19 @@ public class Percolation {
             grids[row][col] = OPEN;
             openSitesCount++;
             int current = xyTo1D(row, col);
-            if (isOpen(row + 1, col)) intoUF(current,row+1,col);
-            if (isOpen(row - 1, col)) intoUF(current,row-1,col);
+            if (isOpen(row + 1, col)) intoUF(current, row + 1, col);
+            if (isOpen(row - 1, col)) intoUF(current, row - 1, col);
 
-            if (isOpen(row, col + 1)) intoUF(current,row,col+1);
-            if (isOpen(row, col - 1)) intoUF(current,row,col-1);
+            if (isOpen(row, col + 1)) intoUF(current, row, col + 1);
+            if (isOpen(row, col - 1)) intoUF(current, row, col - 1);
         }
     }
-    private void intoUF(int current,int row,int col){
-        wUF.union(current,xyTo1D(row,col));
-        fullUF.union(current,xyTo1D(row,col));
+
+    private void intoUF(int current, int row, int col) {
+        wUF.union(current, xyTo1D(row, col));
+        fullUF.union(current, xyTo1D(row, col));
     }
+
     // 判断数组的边界
     private boolean isValid(int row, int col) {
         return row >= 0 && row < grids.length && col >= 0 && col < grids[row].length;
@@ -65,7 +67,10 @@ public class Percolation {
 
     // is the site (row,col) open?
     public boolean isOpen(int row, int col) {
-        if (isValid(row, col) && grids[row][col] == OPEN) return true;
+        if (!isValid(row, col)) {
+            throw new IllegalArgumentException();
+        }
+        if (grids[row][col] == OPEN) return true;
         return false;
     }
 
