@@ -68,7 +68,7 @@ public class Percolation {
     // is the site (row,col) open?
     public boolean isOpen(int row, int col) {
         if (!isValid(row, col)) {
-            throw new IllegalArgumentException();
+            return false;
         }
         if (grids[row][col] == OPEN) return true;
         return false;
