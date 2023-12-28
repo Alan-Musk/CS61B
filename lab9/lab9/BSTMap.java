@@ -133,18 +133,18 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         else if (cmp > 0) p.right = removeHelper(p.right, key);
         else {
             Node temp;
-            if (p.right == null){
-                temp=p;
-                p=p.left;
+            if (p.right == null) {
+                temp = p;
+                p = p.left;
                 return temp;
             }
-            if (p.left == null){
-                temp=p;
-                p=p.right;
+            if (p.left == null) {
+                temp = p;
+                p = p.right;
                 return temp;
             }
             Node t = p;
-            temp=p;
+            temp = p;
             p = min(t.right);
             p.right = deleteMin(t.right);
             p.left = t.left;
@@ -166,7 +166,44 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      **/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        Node temp = removeHelper(root,value,key);
+        if (temp == null) {
+            return null;
+        }
+        return temp.value;
+    }
+
+    private Node removeHelper(Node p, V value, K key) {
+        if (p == null) return null;
+        int cmp = key.compareTo(p.key);
+        if (cmp < 0) p.left = removeHelper(p.left, value, key);
+        else if (cmp > 0) p.right = removeHelper(p.right, value, key);
+        else{
+            if(p.value==value)
+            {
+                Node temp;
+                if (p.right == null) {
+                    temp = p;
+                    p = p.left;
+                    return temp;
+                }
+                if (p.left == null) {
+                    temp = p;
+                    p = p.right;
+                    return temp;
+                }
+                Node t = p;
+                temp = p;
+                p = min(t.right);
+                p.right = deleteMin(t.right);
+                p.left = t.left;
+                return temp;
+            }
+            else {
+                return null;
+            }
+        }
+        return p;
     }
 
     private Node deleteMin(Node x) {
