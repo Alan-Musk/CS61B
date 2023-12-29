@@ -10,6 +10,17 @@ import lab9.BSTMap;
  */
 public class TestBSTMap {
 
+    // Test initialization and generics
+    @Test
+    public void testInitialization() {
+        try {
+            BSTMap<String, Integer> b = new BSTMap<>();
+            assertNotNull("BSTMap should be initialized", b);
+        } catch (Exception e) {
+            fail("Failed to initialize BSTMap");
+        }
+    }
+
     @Test
     public void sanityGenericsTest() {
         try {
@@ -39,6 +50,31 @@ public class TestBSTMap {
         for (int i = 0; i < 455; i++) {
             assertTrue(null == b.get("hi" + i) && !b.containsKey("hi" + i));
         }
+    }
+    // Test put and get operations
+    @Test
+    public void testPutAndGet() {
+        BSTMap<String, Integer> b = new BSTMap<>();
+        b.put("apple", 1);
+        b.put("banana", 2);
+        int apple = b.get("apple");
+        int banana = b.get("banana");
+
+        assertEquals("Check value of key 'apple'", 1, apple);
+        assertEquals("Check value of key 'banana'", 2, banana);
+    }
+
+    // Test remove method and ensure size updates correctly
+    @Test
+    public void testRemove() {
+        BSTMap<String, Integer> b = new BSTMap<>();
+        b.put("apple", 1);
+        b.put("banana", 2);
+        b.remove("apple");
+
+        assertEquals("Size should decrease after removal", 1, b.size());
+        assertNull("Removed key should return null", b.get("apple"));
+        assertNotNull("Non-removed key should return value", b.get("banana"));
     }
 
     // assumes put works
@@ -85,6 +121,8 @@ public class TestBSTMap {
         assertTrue(b.containsKey("hi"));
         assertTrue(b.get("hi") != null);
     }
+
+
 
     public static void main(String[] args) {
         jh61b.junit.TestRunner.runTests(TestBSTMap.class);

@@ -1,8 +1,8 @@
 package lab9;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import edu.princeton.cs.algs4.In;
+
+import java.util.*;
 
 /**
  * Implementation of interface Map61B with BST as core data structure.
@@ -46,6 +46,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      * or null if this map contains no mapping for the key.
      */
     private V getHelper(K key, Node p) {
+        if (p == null) return null;
         if (key.compareTo(p.key) == 0) return p.value;
         else if (p.left == null && p.right == null) {
             return null;
@@ -72,13 +73,14 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (p == null) {
             size += 1;
             p = new Node(key, value);
-        } else if (key.compareTo(p.key) == 0) {
-            p.value = value;
-            return p;
+        } else if (key.compareTo(p.key) > 0) {
+            p.right = putHelper(key, value, p.right);
         } else if (key.compareTo(p.key) < 0) {
-            return putHelper(key, value, p.left);
+            p.left = putHelper(key, value, p.left);
+        } else {
+            p.value = value;
         }
-        return putHelper(key, value, p.right);
+        return p;
     }
 
     /**
@@ -87,7 +89,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public void put(K key, V value) {
-        putHelper(key, value, root);
+        root = putHelper(key, value, root);
     }
 
     /* Returns the number of key-value mappings in this map. */
@@ -119,39 +121,45 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        Node temp = removeHelper(root, key);
-        if (temp == null) {
-            return null;
-        }
-        return temp.value;
+        RootAndValue rv = removeHelper(root, key, null);
+        root = rv.newRoot;
+        return rv.removedValue;
     }
 
-    private Node removeHelper(Node p, K key) {
-        if (p == null) return null;
+    private RootAndValue removeHelper(Node p, K key, Node parent) {
+        if (p == null) return new RootAndValue(null, null);
         int cmp = key.compareTo(p.key);
-        if (cmp < 0) p.left = removeHelper(p.left, key);
-        else if (cmp > 0) p.right = removeHelper(p.right, key);
-        else {
-            Node temp;
-            if (p.right == null) {
-                temp = p;
-                p = p.left;
-                return temp;
-            }
-            if (p.left == null) {
-                temp = p;
-                p = p.right;
-                return temp;
-            }
+        if (cmp < 0) {
+            RootAndValue leftResult = removeHelper(p.left, key, p);
+            p.left = leftResult.newRoot;
+            return new RootAndValue(p, leftResult.removedValue);
+        } else if (cmp > 0) {
+            RootAndValue rightResult = removeHelper(p.right, key, p);
+            p.right = rightResult.newRoot;
+            return new RootAndValue(p, rightResult.removedValue);
+        } else {
+            size--;
+            if (p.right == null) return new RootAndValue(p.left, p.value);
+            if (p.left == null) return new RootAndValue(p.right, p.value);
+//            有两个节点
             Node t = p;
-            temp = p;
-            p = min(t.right);
-            p.right = deleteMin(t.right);
-            p.left = t.left;
-            return temp;
+            Node minRight = min(t.right);
+            minRight.right = deleteMin(t.right);
+            minRight.left = t.left;
+            return new RootAndValue(minRight, t.value);// 返回新的根和被删除的值
         }
-        return p;
     }
+
+    private class RootAndValue {
+        private Node newRoot;
+        private V removedValue;
+
+        public RootAndValue(Node newRoot, V removedValue) {
+            this.newRoot = newRoot;
+            this.removedValue = removedValue;
+        }
+    }
+
 
     private Node min(Node x) {
         if (x.left == null) return x;
@@ -166,55 +174,91 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      **/
     @Override
     public V remove(K key, V value) {
-        Node temp = removeHelper(root,value,key);
-        if (temp == null) {
-            return null;
-        }
-        return temp.value;
+        RootAndValue rv = removeHelper(root, key, value, null);
+        root = rv.newRoot;
+        return rv.removedValue;
     }
 
-    private Node removeHelper(Node p, V value, K key) {
-        if (p == null) return null;
+    private RootAndValue removeHelper(Node p, K key, V value, Node parent) {
+        if (p == null) return new RootAndValue(null, null);
+
         int cmp = key.compareTo(p.key);
-        if (cmp < 0) p.left = removeHelper(p.left, value, key);
-        else if (cmp > 0) p.right = removeHelper(p.right, value, key);
-        else{
-            if(p.value==value)
-            {
-                Node temp;
-                if (p.right == null) {
-                    temp = p;
-                    p = p.left;
-                    return temp;
-                }
-                if (p.left == null) {
-                    temp = p;
-                    p = p.right;
-                    return temp;
-                }
+        if (cmp < 0) {
+            RootAndValue leftResult = removeHelper(p.left, key, value, p);
+            p.left = leftResult.newRoot;
+            return new RootAndValue(p, leftResult.removedValue);
+        } else if (cmp > 0) {
+            RootAndValue rightResult = removeHelper(p.right, key, value, p);
+            p.right = rightResult.newRoot;
+            return new RootAndValue(p, rightResult.removedValue);
+        } else { // 键匹配，检查值是否也匹配
+            if (p.value.equals(value)) {
+                size--; // 更新大小
+                if (p.right == null) return new RootAndValue(p.left, p.value);
+                if (p.left == null) return new RootAndValue(p.right, p.value);
+
+                // 节点有两个子节点，找到右子树的最小节点来替换
                 Node t = p;
-                temp = p;
-                p = min(t.right);
-                p.right = deleteMin(t.right);
-                p.left = t.left;
-                return temp;
-            }
-            else {
-                return null;
+                Node minRight = min(t.right);
+                minRight.right = deleteMin(t.right);
+                minRight.left = t.left;
+
+                return new RootAndValue(minRight, t.value); // 返回新的根和被删除的值
+            } else {
+                return new RootAndValue(p, null); // 值不匹配，不进行删除操作
             }
         }
-        return p;
     }
+
 
     private Node deleteMin(Node x) {
         if (x.left == null) return x.right;
         x.left = deleteMin(x.left);
-        size -= 1;
         return x;
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new BSTIterator(root);
+    }
+
+   private class BSTIterator implements Iterator<K>{
+        private Stack<Node> stack=new Stack<>();
+        public BSTIterator(Node root)
+        {
+            pushAllLeft(root);
+        }
+
+        @Override
+       public boolean hasNext()
+        {
+            return !stack.isEmpty();
+        }
+
+        @Override
+       public K next(){
+            if(!hasNext()) throw new NoSuchElementException();
+            Node nextNode=stack.pop();
+            pushAllLeft(nextNode.right);
+            return nextNode.key;
+        }
+        private void pushAllLeft(Node node)
+        {
+            while(node!=null)
+            {
+                stack.push(node);
+                node=node.left;
+            }
+        }
+   }
+
+
+    public static void main(String[] args) {
+        BSTMap<String, Integer> bstmap = new BSTMap<>();
+        bstmap.put("hello", 5);
+        bstmap.put("cat", 10);
+        bstmap.put("fish", 22);
+        bstmap.put("zebra", 90);
+        bstmap.remove("cat");
     }
 }
