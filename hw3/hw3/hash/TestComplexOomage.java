@@ -2,6 +2,7 @@ package hw3.hash;
 
 import edu.princeton.cs.algs4.In;
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -41,7 +42,7 @@ public class TestComplexOomage {
     public void testWithDeadlyParams() {
         // 这里hint的意思是说 整数溢出导致hashcode分布不良
         List<Oomage> deadlyList = new ArrayList<>();
-        List<Integer> test=new ArrayList<>();
+        List<Integer> test = new ArrayList<>();
         for (int i = 0; i < 256; i++) {
             test.add(255);
         }
@@ -51,7 +52,9 @@ public class TestComplexOomage {
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
     }
 
-    /** Calls tests for SimpleOomage. */
+    /**
+     * Calls tests for SimpleOomage.
+     */
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestComplexOomage.class);
     }

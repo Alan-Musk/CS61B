@@ -1,6 +1,7 @@
 package hw3.hash;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -46,6 +47,7 @@ public class TestSimpleOomage {
         assertNotEquals(ooA2, ooB);
         assertNotEquals(ooA, "ketchup");
     }
+
     @Test
     public void testHashCodeAndEqualsConsistency() {
         SimpleOomage ooA = new SimpleOomage(5, 10, 20);
@@ -68,7 +70,9 @@ public class TestSimpleOomage {
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(oomages, 10));
     }
 
-    /** Calls tests for SimpleOomage. */
+    /**
+     * Calls tests for SimpleOomage.
+     */
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestSimpleOomage.class);
     }
