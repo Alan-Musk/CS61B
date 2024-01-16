@@ -24,16 +24,12 @@ public class SimpleOomage implements Oomage {
         return false;
     }
 
-//     Uncomment this method after you've written
-//     equals and failed the testHashCodeAndEqualsConsistency
-//     test.
     @Override
     public int hashCode() {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
-
-            return (red*31+green)*31+blue;
+            return (red/5*31+green/5)*31+blue/5;
         }
     }
 

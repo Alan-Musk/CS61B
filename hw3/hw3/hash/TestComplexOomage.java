@@ -1,5 +1,6 @@
 package hw3.hash;
 
+import edu.princeton.cs.algs4.In;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -36,15 +37,19 @@ public class TestComplexOomage {
     /* TODO: Create a list of Complex Oomages called deadlyList
      * that shows the flaw in the hashCode function.
      */
-    /*
     @Test
     public void testWithDeadlyParams() {
+        // 这里hint的意思是说 整数溢出导致hashcode分布不良
         List<Oomage> deadlyList = new ArrayList<>();
-
+        List<Integer> test=new ArrayList<>();
+        for (int i = 0; i < 256; i++) {
+            test.add(255);
+        }
+        deadlyList.add(new ComplexOomage(test));
         // Your code here.
 
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
-    } */
+    }
 
     /** Calls tests for SimpleOomage. */
     public static void main(String[] args) {
