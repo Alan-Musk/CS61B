@@ -27,26 +27,23 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Returns the index of the node to the left of the node at i.
      */
     private static int leftIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return 2*i;
     }
 
     /**
      * Returns the index of the node to the right of the node at i.
      */
     private static int rightIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return 2*i+1;
     }
 
     /**
      * Returns the index of the node that is the parent of the node at i.
      */
     private static int parentIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        if (i==1) throw new IllegalArgumentException("当i==1时已经时该树的根了");
+        return i/2;
     }
-
     /**
      * Gets the node at the ith index, or returns null if the index is out of
      * bounds.
@@ -98,17 +95,16 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             return index2;
         }
     }
-
-
     /**
      * Bubbles up the node currently at the given index.
      */
     private void swim(int index) {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
-
-        /** TODO: Your code here. */
-        return;
+        while(inBounds(index)&&min(index,parentIndex(index))==index){
+            swap(index,parentIndex(index));
+            index/=2;
+        }
     }
 
     /**
@@ -117,8 +113,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     private void sink(int index) {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
-
-        /** TODO: Your code here. */
+        while(inBounds(index)){
+            int smallest=min(rightIndex(index))
+            swap();
+        }
         return;
     }
 
