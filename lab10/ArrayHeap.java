@@ -169,10 +169,16 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
+        if (size == 0) {
+           return null;
+        }
         T result = contents[1].myItem;
         swap(1, size);
+        contents[size] = null;
         size--;
-        sink(1);
+        if (size > 0) { // 在调用sink之前检查是否还有元素
+            sink(1);
+        }
         return result;
     }
 
