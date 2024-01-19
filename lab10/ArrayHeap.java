@@ -1,4 +1,6 @@
+import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -17,7 +19,6 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         /* Add a dummy item at the front of the ArrayHeap so that the getLeft,
          * getRight, and parent methods are nicer. */
         contents[0] = null;
-
         /* Even though there is an empty spot at the front, we still consider
          * the size to be 0 since nothing has been inserted yet. */
         size = 0;
@@ -27,23 +28,24 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Returns the index of the node to the left of the node at i.
      */
     private static int leftIndex(int i) {
-        return 2*i;
+        return 2 * i;
     }
 
     /**
      * Returns the index of the node to the right of the node at i.
      */
     private static int rightIndex(int i) {
-        return 2*i+1;
+        return 2 * i + 1;
     }
 
     /**
      * Returns the index of the node that is the parent of the node at i.
      */
     private static int parentIndex(int i) {
-        if (i==1) throw new IllegalArgumentException("当i==1时已经时该树的根了");
-        return i/2;
+        if (i == 1) return 1;
+        return i / 2;
     }
+
     /**
      * Gets the node at the ith index, or returns null if the index is out of
      * bounds.
@@ -95,15 +97,16 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             return index2;
         }
     }
+
     /**
      * Bubbles up the node currently at the given index.
      */
     private void swim(int index) {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
-        while(inBounds(index)&&min(index,parentIndex(index))==index){
-            swap(index,parentIndex(index));
-            index/=2;
+        while (inBounds(index) && min(index, parentIndex(index)) == index) {
+            swap(index, parentIndex(index));
+            index /= 2;
         }
     }
 
@@ -113,11 +116,19 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     private void sink(int index) {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
-        while(inBounds(index)){
-            int smallest=min(rightIndex(index))
-            swap();
+        while (inBounds(leftIndex(index))) {  // 检查至少有一个子节点
+            int smallest = leftIndex(index);
+            if (inBounds(rightIndex(index)) && min(rightIndex(index), smallest) == rightIndex(index)) {
+                // 如果右节点存在且优先级更小，则选择右节点
+                smallest = rightIndex(index);
+            }
+            if (min(index, smallest) == index) {
+                // 如果当前节点的优先级已经小于或等于较小的子节点的优先级，则不再sink
+                break;
+            }
+            swap(index, smallest);
+            index = smallest;
         }
-        return;
     }
 
     /**
@@ -130,8 +141,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if (size + 1 == contents.length) {
             resize(contents.length * 2);
         }
-
-        /* TODO: Your code here! */
+        Node n = new Node(item, priority);
+        contents[++size] = n;
+        swim(size);
     }
 
     /**
@@ -140,8 +152,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T peek() {
-        /* TODO: Your code here! */
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        return contents[1].myItem;
     }
 
     /**
@@ -155,8 +169,11 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
-        /* TODO: Your code here! */
-        return null;
+        T result = contents[1].myItem;
+        swap(1, size);
+        size--;
+        sink(1);
+        return result;
     }
 
     /**
@@ -178,9 +195,20 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        /* TODO: Your code here! */
-        return;
+        int index = 0;
+        // 1。 找到节点然后更换  返回更换的下标
+        for (int i = 1; i <= size; i++) {
+            if (contents[i].myItem.equals(item)) {
+                contents[i].myPriority = priority;
+                index = i;
+            }
+        }
+        if (index != 0) {
+            swim(index);
+            sink(index);
+        }
     }
+
 
     /**
      * Prints out the heap sideways. Provided for you.
@@ -236,7 +264,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             myPriority = priority;
         }
 
-        public T item(){
+        public T item() {
             return myItem;
         }
 
@@ -251,7 +279,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     }
 
 
-    /** Helper function to resize the backing array when necessary. */
+    /**
+     * Helper function to resize the backing array when necessary.
+     */
     private void resize(int capacity) {
         Node[] temp = new ArrayHeap.Node[capacity];
         for (int i = 1; i < this.contents.length; i++) {
