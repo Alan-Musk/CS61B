@@ -3,7 +3,7 @@ package lab11.graphs;
 import edu.princeton.cs.algs4.Stack;
 
 /**
- *  @作者 Josh Hug
+ * @作者 Josh Hug
  */
 public class MazeCycles extends MazeExplorer {
     /* 继承公共字段:
